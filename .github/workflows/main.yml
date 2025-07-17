@@ -23,8 +23,8 @@ jobs:
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
           additional_params: --report-format pdf --output-name GSS_Report --output-path .
       
-      - name: Upload report as artifact
+      - name: Upload Checkmarx Report as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: gss-TMD-report
-          path: results/report.html
+          path: GSS_Report.pdf
