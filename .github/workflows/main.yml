@@ -21,7 +21,7 @@ jobs:
           branch: github-action-demo
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
-          additional_params: --report-format pdf --output-name GSS_Report --output-path .
+          additional_params: --tags github_test --report-format pdf --output-name GSS_Report --output-path .
       
       - name: Upload Checkmarx Report as Artifact
         uses: actions/upload-artifact@v4
