@@ -15,7 +15,7 @@ jobs:
       - name: Checkmarx One CLI Action
         uses: checkmarx/ast-github-action@main #Github Action version
         with:
-          project_name: GSS_jay_Test
+          project_name: GSS_Jay_Test
           cx_tenant: galaxysoftware
           base_uri: https://sng.ast.checkmarx.net
           branch: github-action-demo
