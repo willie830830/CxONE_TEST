@@ -5,23 +5,59 @@ on:
       - main
       - master
       - dev
+env:
+  # Checkmarx Token (從 GitHub Secrets 取得)
+  CX_REFRESH_TOKEN: '4lbgkTuJev1vuehaDDBlwMHbTRCXON90'
+
+  # Checkmarx 設定
+  CX_PROJECT_NAME: 'OLD_TS_Server_Web' # Checkmarx 專案名稱
+  CX_BASE_URI: 'https://sng.ast.checkmarx.net'
+  CX_TENANT: 'mssp-gss-cpo12igs'
+  CX_CLIENT_ID: 'IGS_Client'
+
+
+  
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug - Print Environment Variables
+        shell: bash
+        run: |
+          echo "=== 環境變數檢查 ==="
+          echo "CX_PROJECT_NAME: ${{ env.CX_PROJECT_NAME }}"
+          echo "CX_BASE_URI: ${{ env.CX_BASE_URI }}"
+          echo "CX_TENANT: ${{ env.CX_TENANT }}"
+          echo "CX_CLIENT_ID: ${{ env.CX_CLIENT_ID }}"
+
+          # 印出 CX_REFRESH_TOKEN 的長度和隱碼版本
+          TOKEN="${{ env.CX_REFRESH_TOKEN }}"
+          TOKEN_LENGTH=${#TOKEN}
+          echo "CX_REFRESH_TOKEN 長度: $TOKEN_LENGTH"
+
+          if [ $TOKEN_LENGTH -gt 10 ]; then
+            # 顯示前5個字元...後5個字元
+            MASKED="${TOKEN:0:5}...${TOKEN: -5}"
+            echo "CX_REFRESH_TOKEN (隱碼): $MASKED"
+          else
+            echo "CX_REFRESH_TOKEN (隱碼): [長度不足10，可能為空]"
+          fi
+
+          echo "Repository Name: ${{ github.event.repository.name }}"
+          
       - name: Checkout
         uses: actions/checkout@v2
       
       - name: Checkmarx One CLI Action
         uses: checkmarx/ast-github-action@main #Github Action version
         with:
-          project_name: GSS_Willie_Test
-          cx_tenant: galaxysoftware
-          base_uri: https://sng.ast.checkmarx.net
-          branch: github-action-demo
-          cx_client_id: ${{ secrets.CX_CLIENT_ID }}
-          cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
-          additional_params: --tags github_test --report-format pdf --output-name GSS_Report --output-path .
+          project_name: ${{ env.CX_PROJECT_NAME }}
+          cx_tenant: ${{ env.CX_TENANT }}
+          base_uri: ${{ env.CX_BASE_URI }}
+          branch: ${{ github.event.repository.name }} #RepoName
+          cx_client_id: ${{ env.CX_CLIENT_ID }}
+          cx_client_secret: ${{ env.CX_REFRESH_TOKEN }}
+          additional_params: --report-format pdf --output-name CxOne_Report --output-path .
       
       - name: Upload Checkmarx Report as Artifact
         uses: actions/upload-artifact@v4
