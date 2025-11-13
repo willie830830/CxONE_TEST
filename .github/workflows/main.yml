@@ -14,11 +14,7 @@ env:
   CX_BASE_URI: 'https://sng.ast.checkmarx.net'
   CX_TENANT: 'mssp-gss-cpo12igs'
   CX_CLIENT_ID: 'IGS_Client'
-
-permissions:
-  contents: read
-  security-events: write
-  
+ 
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -81,9 +77,3 @@ jobs:
         with:
           name: Report
           path: ${{ env.CX_PROJECT_NAME }}.pdf
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: ${{ env.CX_PROJECT_NAME }}.sarif
