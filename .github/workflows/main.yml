@@ -68,7 +68,7 @@ jobs:
           # GitHub API Token
           github_token: ${{ github.token }}
           # Additional parameters for AST scan
-          additional_params: --report-format pdf --report-pdf-options sast --output-name ${{ env.CX_PROJECT_NAME }} --output-path . --debug # optional, default is 
+          additional_params: --report-format pdf,sarif --output-name ${{ env.CX_PROJECT_NAME }} --output-path . --debug # optional, default is 
           # Repository name for PR decoration
           repo_name: ${{ github.event.repository.name }}"
           # Organization name to create the Pr comment
@@ -81,3 +81,10 @@ jobs:
         with:
           name: Report
           path: ${{ env.CX_PROJECT_NAME }}.pdf
+
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: cx_result.sarif
