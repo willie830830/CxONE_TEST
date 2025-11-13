@@ -15,7 +15,9 @@ env:
   CX_TENANT: 'mssp-gss-cpo12igs'
   CX_CLIENT_ID: 'IGS_Client'
 
-
+permissions:
+  contents: read
+  security-events: write
   
 jobs:
   build:
