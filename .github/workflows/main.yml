@@ -68,7 +68,7 @@ jobs:
           # GitHub API Token
           github_token: ${{ github.token }}
           # Additional parameters for AST scan
-          additional_params: --report-format pdf --output-name CxOne_Report --output-path . --debug # optional, default is 
+          additional_params: --report-format pdf --output-name ${{ env.CX_PROJECT_NAME }} --output-path . --debug # optional, default is 
           # Repository name for PR decoration
           repo_name: ${{ github.event.repository.name }}"
           # Organization name to create the Pr comment
@@ -79,5 +79,5 @@ jobs:
       - name: Upload Checkmarx Report as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: GSS_Report
-          path: GSS_Report.pdf
+          name: Report
+          path: ${{ env.CX_PROJECT_NAME }}.pdf
