@@ -10,7 +10,7 @@ env:
   CX_REFRESH_TOKEN: '4lbgkTuJev1vuehaDDBlwMHbTRCXON90'
 
   # Checkmarx 設定
-  CX_PROJECT_NAME: 'OLD_TS_Server_Web' # Checkmarx 專案名稱
+  CX_PROJECT_NAME: 'TEST' # Checkmarx 專案名稱
   CX_BASE_URI: 'https://sng.ast.checkmarx.net'
   CX_TENANT: 'mssp-gss-cpo12igs'
   CX_CLIENT_ID: 'IGS_Client'
@@ -47,17 +47,34 @@ jobs:
           
       - name: Checkout
         uses: actions/checkout@v2
-      
-      - name: Checkmarx One CLI Action
-        uses: checkmarx/ast-github-action@main #Github Action version
+
+      - name: Checkmarx AST Github Action
+        # You may pin to the exact commit or the version.
+        # uses: Checkmarx/ast-github-action@749fec53e0db0f6404a97e2e0807c3e80e3583a7
+        uses: Checkmarx/ast-github-action@2.0.23
         with:
+          # Provide the AST portal URL
+          base_uri: 'https://sng.ast.checkmarx.net'
+          # Provide the Tenant for AST portal URL
+          cx_tenant: 'mssp-gss-cpo12igs'
+          # Client ID for AST portal authentication
+          cx_client_id: 'IGS_Client'
+          # Secret key for AST portal authentication
+          cx_client_secret: '4lbgkTuJev1vuehaDDBlwMHbTRCXON90'
+          # Select a Checkmarx Project Name
           project_name: ${{ env.CX_PROJECT_NAME }}
-          cx_tenant: ${{ env.CX_TENANT }}
-          base_uri: ${{ env.CX_BASE_URI }}
-          branch: ${{ github.event.repository.name }} #RepoName
-          cx_client_id: ${{ env.CX_CLIENT_ID }}
-          cx_client_secret: ${{ env.CX_REFRESH_TOKEN }}
-          additional_params: --report-format pdf --output-name CxOne_Report --output-path .
+          # Branch name
+          branch: ${{ github.event.repository.name }}
+          # GitHub API Token
+          github_token: ${{ github.token }}
+          # Additional parameters for AST scan
+          additional_params: --report-format pdf --output-name CxOne_Report --output-path . --debug # optional, default is 
+          # Repository name for PR decoration
+          repo_name: ${{ github.event.repository.name }}"
+          # Organization name to create the Pr comment
+          namespace: ${{ github.repository_owner }}
+          # Pr Number of the pull request that needs the decoration
+          pr_number: ${{ github.event.number }}
       
       - name: Upload Checkmarx Report as Artifact
         uses: actions/upload-artifact@v4
