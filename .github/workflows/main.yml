@@ -58,13 +58,13 @@ jobs:
           # Secret key for AST portal authentication
           cx_client_secret: '4lbgkTuJev1vuehaDDBlwMHbTRCXON90'
           # Select a Checkmarx Project Name
-          project_name: ${{ env.CX_PROJECT_NAME }}
+          project_name: 'ACD_RD3_Server_Web'
           # Branch name
-          branch: ${{ github.event.repository.name }}
+          branch: 'All'
           # GitHub API Token
           github_token: ${{ github.token }}
           # Additional parameters for AST scan
-          additional_params: --report-format pdf --output-name ${{ env.CX_PROJECT_NAME }} --output-path . --debug # optional, default is 
+          additional_params: --report-format pdf --output-name ${{ env.CX_PROJECT_NAME }} --tags Panther_Backend_Report --output-path . --debug # optional, default is 
           # Repository name for PR decoration
           repo_name: ${{ github.event.repository.name }}
           # Organization name to create the Pr comment
